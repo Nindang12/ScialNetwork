@@ -77,7 +77,7 @@ export default function Home() {
 
   return (
     <div className="w-full h-screen bg-gray-100 flex flex-col items-center p-4">
-      <h1 className="text-xl font-bold mb-4">Trang chủ</h1>
+      <h1 className="text-xl font-bold mb-4 text-black">Trang chủ</h1>
       <div className="max-w-xl w-full h-auto">
         <div className="bg-white rounded-2xl shadow-md p-4 space-y-4">
           <div
@@ -89,7 +89,7 @@ export default function Home() {
               <input
                 type="text"
                 placeholder="Có gì mới?"
-                className="flex-1 p-2 border rounded-lg focus:outline-none"
+                className="flex-1 p-2 border text-black rounded-lg focus:outline-none"
               />
               <button className="bg-blue-500 text-white px-4 py-2 rounded-lg font-semibold">Đăng</button>
             </div>
@@ -102,7 +102,7 @@ export default function Home() {
                   <button className="text-gray-600 hover:text-black">
                     <X size={22} onClick={onClose} className="cursor-pointer" />
                   </button>
-                  <h2 className="text-lg font-semibold">Thread mới</h2>
+                  <h2 className="text-lg font-semibold text-black">Thread mới</h2>
                   <div></div>
                 </div>
 
@@ -110,11 +110,11 @@ export default function Home() {
                   <div className="flex items-start space-x-3">
                     <img src="https://placehold.co/40" alt="Avatar" className="w-10 h-10 rounded-full" />
                     <div className="w-full">
-                      <p className="text-sm font-semibold">
-                        nindang035 <span className="text-gray-500">› Thêm chủ đề</span>
+                      <p className="text-sm font-semibold text-black">
+                        username <span className="text-gray-500">› Thêm chủ đề</span>
                       </p>
                       <textarea
-                        className="w-full mt-1 p-2 text-sm border-none outline-none resize-none"
+                        className="w-full mt-1 p-2 text-sm font-bold border-none text-black/50 outline-none resize-none"
                         rows={2}
                         placeholder="Có gì mới?"
                         value={content}
@@ -283,7 +283,7 @@ function Post({ postId }: { postId: number }) {
           <div>
           <div className="flex items-center gap-2">
             <div>
-              <p className="font-semibold">{username}</p>
+              <p className="font-semibold text-black">{username}</p>
               <p className="text-sm text-gray-500">{time}</p>
             </div>
             <button
@@ -302,7 +302,7 @@ function Post({ postId }: { postId: number }) {
         <div className="hover:bg-gray-100 p-2 rounded-full flex justify-center items-center w-8 h-8" onClick={(e) => {e.stopPropagation()}}>
           <Ellipsis 
             size={20} 
-            className="cursor-pointer hover:text-black" 
+            className="cursor-pointer text-gray-800 hover:text-black" 
             onClick={() => {
             setShowOptions((prev) => !prev)}
           }/>
@@ -313,8 +313,8 @@ function Post({ postId }: { postId: number }) {
             <div className="absolute bg-white border border-gray-200 shadow-md p-2 rounded-lg translate-x-[230%] translate-y-7" onClick={(e) => {
               e.stopPropagation();
             }}>
-              <button className="w-full text-left hover:bg-gray-100 p-2" onClick={() => {setEditMode(true);setShowOptions(false);}}>Chỉnh sửa</button>
-              <button className="w-full text-left hover:bg-gray-100 p-2" onClick={handleDeletePost}>Xóa</button>
+              <button className="w-full text-left text-black hover:bg-gray-100 p-2" onClick={() => {setEditMode(true);setShowOptions(false);}}>Chỉnh sửa</button>
+              <button className="w-full text-left text-black hover:bg-gray-100 p-2" onClick={handleDeletePost}>Xóa</button>
             </div>
           )
         }
@@ -322,7 +322,7 @@ function Post({ postId }: { postId: number }) {
       </div>
 
       {/* Content */}
-      <p className="mt-2">{renderContent()}</p>
+      <p className="mt-2 text-black">{renderContent()}</p>
       {image && <img src={image} alt="Post" className="mt-2 rounded-lg" />}
 
       {/* Action Buttons */}
@@ -353,7 +353,7 @@ function Post({ postId }: { postId: number }) {
             <button className="text-gray-600 hover:text-black">
               <X size={20} onClick={onClose} className="cursor-pointer"/>
             </button>
-            <p className="text-sm font-semibold">Thread trả lời</p>
+            <p className="text-sm font-semibold text-black">Thread trả lời</p>
             <button className="text-gray-600 hover:text-black">
               <MoreHorizontal size={20} />
             </button>
@@ -368,7 +368,7 @@ function Post({ postId }: { postId: number }) {
                 className="w-10 h-10 rounded-full"
               />
               <div className="flex-1">
-                <p className="font-semibold text-sm">{username} <span className="text-gray-500 text-xs">• {time}</span></p>
+                <p className="font-semibold text-sm text-black">{username} <span className="text-gray-500 text-xs">• {time}</span></p>
                 <p className="text-sm text-gray-800">{content}</p>
               </div>
             </div>

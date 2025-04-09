@@ -127,7 +127,7 @@ const CommentPage = ()=>{
                         columnNumber: 9
                     }, this),
                     /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$compiled$2f$react$2f$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__["jsxDEV"])("h1", {
-                        className: "text-xl font-bold mb-4",
+                        className: "text-xl font-bold mb-4 text-black",
                         children: "Trang chủ"
                     }, void 0, false, {
                         fileName: "[project]/src/app/comment/[id]/page.tsx",
@@ -169,7 +169,7 @@ const CommentPage = ()=>{
                                             /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$compiled$2f$react$2f$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__["jsxDEV"])("div", {
                                                 children: [
                                                     /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$compiled$2f$react$2f$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__["jsxDEV"])("p", {
-                                                        className: "font-semibold",
+                                                        className: "font-semibold text-black ",
                                                         children: post.username
                                                     }, void 0, false, {
                                                         fileName: "[project]/src/app/comment/[id]/page.tsx",
@@ -197,7 +197,7 @@ const CommentPage = ()=>{
                                         columnNumber: 13
                                     }, this),
                                     /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$compiled$2f$react$2f$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__["jsxDEV"])("p", {
-                                        className: "mt-2",
+                                        className: "mt-2 text-black",
                                         children: post.content
                                     }, void 0, false, {
                                         fileName: "[project]/src/app/comment/[id]/page.tsx",
@@ -270,7 +270,7 @@ const CommentPage = ()=>{
                                 className: "mt-4",
                                 children: [
                                     /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$compiled$2f$react$2f$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__["jsxDEV"])("p", {
-                                        className: "font-semibold",
+                                        className: "font-semibold text-black",
                                         children: "Thread trả lời"
                                     }, void 0, false, {
                                         fileName: "[project]/src/app/comment/[id]/page.tsx",
@@ -295,7 +295,7 @@ const CommentPage = ()=>{
                                                         /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$compiled$2f$react$2f$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__["jsxDEV"])("div", {
                                                             children: [
                                                                 /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$compiled$2f$react$2f$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__["jsxDEV"])("p", {
-                                                                    className: "font-semibold",
+                                                                    className: "font-semibold text-black",
                                                                     children: reply.username
                                                                 }, void 0, false, {
                                                                     fileName: "[project]/src/app/comment/[id]/page.tsx",
@@ -311,7 +311,7 @@ const CommentPage = ()=>{
                                                                     columnNumber: 25
                                                                 }, this),
                                                                 /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$compiled$2f$react$2f$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__["jsxDEV"])("p", {
-                                                                    className: "mt-1",
+                                                                    className: "mt-1 text-black",
                                                                     children: reply.content
                                                                 }, void 0, false, {
                                                                     fileName: "[project]/src/app/comment/[id]/page.tsx",
@@ -372,7 +372,7 @@ const CommentPage = ()=>{
                                                         /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$compiled$2f$react$2f$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__["jsxDEV"])("input", {
                                                             type: "text",
                                                             placeholder: "Nhập phản hồi...",
-                                                            className: "flex-grow border p-2 rounded-lg text-sm",
+                                                            className: "flex-grow text-black border p-2 rounded-lg text-sm",
                                                             value: replyInputs[reply.id] || "",
                                                             onChange: (e)=>handleReplyInputChange(reply.id, e.target.value)
                                                         }, void 0, false, {
@@ -485,7 +485,7 @@ const CommentPage = ()=>{
                             /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$compiled$2f$react$2f$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__["jsxDEV"])("input", {
                                 type: "text",
                                 placeholder: "Viết bình luận...",
-                                className: "flex-grow border p-2 rounded-lg",
+                                className: "flex-grow border p-2 rounded-lg text-black",
                                 value: newComment,
                                 onChange: (e)=>setNewComment(e.target.value)
                             }, void 0, false, {

@@ -101,7 +101,7 @@ const CommentPage = () => {
     <div className="w-full h-screen bg-gray-100 flex flex-col items-center p-4">
       <div className="min-w-xl flex items-center justify-between gap-4 mb-4">
         <ArrowLeftIcon size={24} className="cursor-pointer" onClick={() => window.history.back()} />
-        <h1 className="text-xl font-bold mb-4">Trang chủ</h1>
+        <h1 className="text-xl font-bold mb-4 text-black">Trang chủ</h1>
         <div></div>
         
       </div>
@@ -112,11 +112,11 @@ const CommentPage = () => {
             <div className="flex items-center gap-2">
               <img src={post.avatar} alt="avatar" className="w-10 h-10 rounded-full" />
               <div>
-                <p className="font-semibold">{post.username}</p>
+                <p className="font-semibold text-black ">{post.username}</p>
                 <p className="text-sm text-gray-500">{post.time}</p>
               </div>
             </div>
-            <p className="mt-2">{post.content}</p>
+            <p className="mt-2 text-black">{post.content}</p>
             <div className="flex gap-4 text-gray-500 mt-3">
               <ActionButton 
                   icon={<Heart size={18} className={liked ? "text-red-500" : "text-gray-500"} />} 
@@ -134,7 +134,7 @@ const CommentPage = () => {
 
           {/* Danh sách comment */}
           <div className="mt-4">
-            <p className="font-semibold">Thread trả lời</p>
+            <p className="font-semibold text-black">Thread trả lời</p>
             {post.replies && post.replies.length > 0 ? (
               post.replies.map((reply) => {
                 return (
@@ -142,9 +142,9 @@ const CommentPage = () => {
                     <div className="flex items-start gap-2 mt-2">
                       <img src={reply.avatar} alt="avatar" className="w-8 h-8 rounded-full" />
                       <div>
-                        <p className="font-semibold">{reply.username}</p>
+                        <p className="font-semibold text-black">{reply.username}</p>
                         <p className="text-sm text-gray-500">{reply.time}</p>
-                        <p className="mt-1">{reply.content}</p>
+                        <p className="mt-1 text-black">{reply.content}</p>
                       </div>
                     </div>
                     <div className="flex gap-2 text-gray-500 mt-3 ml-10">
@@ -167,7 +167,7 @@ const CommentPage = () => {
                         <input
                           type="text"
                           placeholder="Nhập phản hồi..."
-                          className="flex-grow border p-2 rounded-lg text-sm"
+                          className="flex-grow text-black border p-2 rounded-lg text-sm"
                           value={replyInputs[reply.id] || ""}
                           onChange={(e) => handleReplyInputChange(reply.id, e.target.value)}
                         />
@@ -210,7 +210,7 @@ const CommentPage = () => {
           <input
             type="text"
             placeholder="Viết bình luận..."
-            className="flex-grow border p-2 rounded-lg"
+            className="flex-grow border p-2 rounded-lg text-black"
             value={newComment}
             onChange={(e) => setNewComment(e.target.value)}
           />

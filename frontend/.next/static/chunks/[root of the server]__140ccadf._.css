@@ -1259,8 +1259,16 @@
     color: var(--color-black);
   }
 
+  .text-black\/50 {
+    color: color-mix(in oklab, var(--color-black) 50%, transparent);
+  }
+
   .text-blue-500 {
     color: var(--color-blue-500);
+  }
+
+  .text-gray-100 {
+    color: var(--color-gray-100);
   }
 
   .text-gray-400 {

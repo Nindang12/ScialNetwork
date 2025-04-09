@@ -21,18 +21,29 @@ interface Post {
   images?: string[]
 }
 
+interface User {
+  id: string
+  name: string
+  username: string
+  followers: number
+  bio: string
+  avatarUrl: string
+  isAuthor?: boolean
+}
+
 export default function ProfilePage() {
   const params = useParams()
   const userId = params.userId as string
 
   // Mock data - replace with API calls later
-  const user = {
+  const user: User = {
     id: userId,
-    name: 'Đặng Nin',
-    username: 'nindang84',
+    name: 'Author',
+    username: 'username',
     followers: 3,
-    bio: '2k4 nhà',
-    avatarUrl: '/avatar.png' // Fixed: Added leading slash for public directory
+    bio: 'bio',
+    avatarUrl: '/avatar.png', // Fixed: Added leading slash for public directory
+    isAuthor: true
   }
 
   const posts: Post[] = [
@@ -80,7 +91,7 @@ export default function ProfilePage() {
         )}
         <div className="flex-1">
           <div className="flex items-center space-x-2">
-            <span className="font-medium">{post.author.name}</span>
+            <span className="font-medium text-black">{post.author.name}</span>
             <span className="text-gray-500">@{post.author.username}</span>
             <span className="text-gray-400">·</span>
             <span className="text-gray-500 text-sm">
@@ -130,16 +141,16 @@ export default function ProfilePage() {
 
   return (
     <main className="w-full h-screen bg-gray-100 flex flex-col items-center p-4">
-      <span className='text-sm font-bold mb-4'>{user.username}</span>
+      <span className='text-sm font-bold mb-4 text-black'>{user.username}</span>
       <div className='max-w-xl w-full h-auto bg-white rounded-2xl shadow-md p-4 space-y-4'>
         {/* Profile Header */}
         <div className="flex justify-between items-start mb-8">
           <div className="flex-1">
-            <h1 className="text-2xl font-bold">{user.name}</h1>
+            <h1 className="text-2xl font-bold text-black">{user.name}</h1>
             <div className="flex items-center gap-2 mt-1">
               <p className="text-gray-600">{user.username}</p>
             </div>
-            <p className="mt-4">{user.bio}</p>
+            <p className="mt-4 text-black">{user.bio}</p>
             <p className="text-gray-600 mt-2">{user.followers} người theo dõi</p>
           </div>
 
@@ -155,14 +166,16 @@ export default function ProfilePage() {
         </div>
 
         {/* Action Buttons */}
-        <div className="flex gap-3 mb-6">
-          <button className="flex-1 bg-black text-white py-2 rounded-lg font-medium">
-            Theo dõi
-          </button>
-          <button className="flex-1 bg-white border border-gray-300 py-2 rounded-lg font-medium">
-            Nhắc đến
-          </button>
-        </div>
+        {!user.isAuthor && (
+          <div className="flex gap-3 mb-6">
+            <button className="flex-1 bg-black text-white py-2 rounded-lg font-medium">
+              Theo dõi
+            </button>
+            <button className="flex-1 bg-white border border-gray-300 py-2 rounded-lg font-medium text-black">
+              Nhắc đến
+            </button>
+          </div>
+        )}
 
         {/* Content Tabs */}
         <Tab.Group>
