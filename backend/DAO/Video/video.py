@@ -25,4 +25,3 @@ class Video:
         except Exception:
             return False
 
-# comment id,..
