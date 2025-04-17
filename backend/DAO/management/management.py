@@ -1,60 +1,195 @@
+from DAO.User import UserDAO
+from DAO.Post import PostDAO
+from DAO.Comment import CommentDAO
+from DAO.Image import ImageDAO
+from DAO.Video import VideoDAO
+from config import MONGODB_URL, MONGODB_DB_NAME
 from pymongo import MongoClient
-from user_dao import UserDAO
-from post_dao import PostDAO
-from comment_dao import CommentDAO
-from image_dao import ImageDAO
-from video_dao import VideoDAO
 
 class Management:
-    def __init__(self, db_url="mongodb+srv://nhiensu1306:nhiensu0905@blackwolf.pgsd6m8.mongodb.net/", db_name="BlackWolf"):
-        self.client = MongoClient(db_url)
-        self.db = self.client[db_name]
-        
-        # Initialize DAOs with the shared database connection
-        self.user = UserDAO(self.db)
-        self.post = PostDAO(self.db)
-        self.comment = CommentDAO(self.db)
-        self.image = ImageDAO(self.db)
-        self.video = VideoDAO(self.db)
+    @staticmethod
+    def _get_db():
+        client = MongoClient(MONGODB_URL)
+        db = client[MONGODB_DB_NAME]
+        return db
 
-    def __del__(self):
-        # Close the database connection when the Management object is destroyed
-        self.client.close()
+    @staticmethod
+    def _get_daos():
+        db = Management._get_db()
+        return {
+            'user': UserDAO(db),
+            'post': PostDAO(db),
+            'comment': CommentDAO(db),
+            'image': ImageDAO(db),
+            'video': VideoDAO(db)
+        }
 
-    def getUser(self, userID: str):
-        return self.user.get(userID)
+    # User functions
+    @staticmethod
+    def get_all_users():
+        daos = Management._get_daos()
+        return daos['user'].getAll()
 
-    def createUser(self, data: dict):
-        user_obj = self.user.model_class(**data)
-        self.user.add(user_obj)
+    @staticmethod
+    def get_user(userID: str):
+        daos = Management._get_daos()
+        return daos['user'].get(userID)
 
-    def deleteUser(self, userID: str):
-        self.user.delete(userID)
+    @staticmethod
+    def find_user_by_email(email: str):
+        daos = Management._get_daos()
+        return daos['user'].findByEmail(email)
 
-    def getPost(self, postID: str):
-        return self.post.get(postID)
+    @staticmethod
+    def create_user(data: dict):
+        daos = Management._get_daos()
+        user_obj = daos['user'].model_class(**data)
+        daos['user'].add(user_obj)
 
-    def createPost(self, data: dict):
-        post_obj = self.post.model_class(**data)
-        self.post.add(post_obj)
+    @staticmethod
+    def update_user(userID: str, data: dict):
+        daos = Management._get_daos()
+        user_obj = daos['user'].model_class(**data)
+        return daos['user'].update(userID, user_obj)
 
-    def getComments(self, postID: str):
-        return self.comment.getByPost(postID)
+    @staticmethod
+    def delete_user(userID: str):
+        daos = Management._get_daos()
+        return daos['user'].delete(userID)
 
-    def addComment(self, data: dict):
-        comment_obj = self.comment.model_class(**data)
-        self.comment.add(comment_obj)
+    # Post functions
+    @staticmethod
+    def get_all_posts():
+        daos = Management._get_daos()
+        return daos['post'].getAll()
 
-    def getImages(self, postID: str):
-        return self.image.getByPost(postID)
+    @staticmethod
+    def get_post(postID: str):
+        daos = Management._get_daos()
+        return daos['post'].get(postID)
 
-    def uploadImage(self, data: dict):
-        image_obj = self.image.model_class(**data)
-        self.image.add(image_obj)
+    @staticmethod
+    def create_post(data: dict):
+        daos = Management._get_daos()
+        post_obj = daos['post'].model_class(**data)
+        daos['post'].add(post_obj)
 
-    def getVideos(self, postID: str):
-        return self.video.getByPost(postID)
+    @staticmethod
+    def update_post(postID: str, data: dict):
+        daos = Management._get_daos()
+        post_obj = daos['post'].model_class(**data)
+        return daos['post'].update(postID, post_obj)
 
-    def uploadVideo(self, data: dict):
-        video_obj = self.video.model_class(**data)
-        self.video.add(video_obj)
+    @staticmethod
+    def delete_post(postID: str):
+        daos = Management._get_daos()
+        return daos['post'].delete(postID)
+
+    @staticmethod
+    def like_post(postID: str, userID: str):
+        daos = Management._get_daos()
+        return daos['post'].like(postID, userID)
+
+    @staticmethod
+    def repost_post(postID: str, userID: str):
+        daos = Management._get_daos()
+        return daos['post'].repost(postID, userID)
+
+    # Comment functions
+    @staticmethod
+    def get_all_comments():
+        daos = Management._get_daos()
+        return daos['comment'].getAll()
+
+    @staticmethod
+    def get_comment(commentID: str):
+        daos = Management._get_daos()
+        return daos['comment'].get(commentID)
+
+    @staticmethod
+    def get_comments_by_post(postID: str):
+        daos = Management._get_daos()
+        return daos['comment'].getByPost(postID)
+
+    @staticmethod
+    def add_comment(data: dict):
+        daos = Management._get_daos()
+        comment_obj = daos['comment'].model_class(**data)
+        daos['comment'].add(comment_obj)
+
+    @staticmethod
+    def update_comment(commentID: str, data: dict):
+        daos = Management._get_daos()
+        comment_obj = daos['comment'].model_class(**data)
+        return daos['comment'].update(commentID, comment_obj)
+
+    @staticmethod
+    def delete_comment(commentID: str):
+        daos = Management._get_daos()
+        return daos['comment'].delete(commentID)
+
+    @staticmethod
+    def like_comment(commentID: str, userID: str):
+        daos = Management._get_daos()
+        return daos['comment'].like(commentID, userID)
+
+    # Image functions
+    @staticmethod
+    def get_all_images():
+        daos = Management._get_daos()
+        return daos['image'].getAll()
+
+    @staticmethod
+    def get_image(imageID: str):
+        daos = Management._get_daos()
+        return daos['image'].get(imageID)
+
+    @staticmethod
+    def get_images_by_post(postID: str):
+        daos = Management._get_daos()
+        return daos['image'].getByPost(postID)
+
+    @staticmethod
+    def upload_image(data: dict):
+        daos = Management._get_daos()
+        image_obj = daos['image'].model_class(**data)
+        daos['image'].add(image_obj)
+
+    @staticmethod
+    def update_image(imageID: str, data: dict):
+        daos = Management._get_daos()
+        image_obj = daos['image'].model_class(**data)
+        return daos['image'].update(imageID, image_obj)
+
+    # Video functions
+    @staticmethod
+    def get_all_videos():
+        daos = Management._get_daos()
+        return daos['video'].getAll()
+
+    @staticmethod
+    def get_video(videoID: str):
+        daos = Management._get_daos()
+        return daos['video'].get(videoID)
+
+    @staticmethod
+    def get_videos_by_post(postID: str):
+        daos = Management._get_daos()
+        return daos['video'].getByPost(postID)
+
+    @staticmethod
+    def upload_video(data: dict):
+        daos = Management._get_daos()
+        video_obj = daos['video'].model_class(**data)
+        daos['video'].add(video_obj)
+
+    @staticmethod
+    def update_video(videoID: str, data: dict):
+        daos = Management._get_daos()
+        video_obj = daos['video'].model_class(**data)
+        return daos['video'].update(videoID, video_obj)
+
+    @staticmethod
+    def delete_video(videoID: str):
+        daos = Management._get_daos()
+        return daos['video'].delete(videoID)
