@@ -1,3 +1,4 @@
+from pymongo import MongoClient
 from user_dao import UserDAO
 from post_dao import PostDAO
 from comment_dao import CommentDAO
@@ -5,12 +6,20 @@ from image_dao import ImageDAO
 from video_dao import VideoDAO
 
 class Management:
-    def __init__(self):
-        self.user = UserDAO()
-        self.post = PostDAO()
-        self.comment = CommentDAO()
-        self.image = ImageDAO()
-        self.video = VideoDAO()
+    def __init__(self, db_url="mongodb+srv://nhiensu1306:nhiensu0905@blackwolf.pgsd6m8.mongodb.net/", db_name="BlackWolf"):
+        self.client = MongoClient(db_url)
+        self.db = self.client[db_name]
+        
+        # Initialize DAOs with the shared database connection
+        self.user = UserDAO(self.db)
+        self.post = PostDAO(self.db)
+        self.comment = CommentDAO(self.db)
+        self.image = ImageDAO(self.db)
+        self.video = VideoDAO(self.db)
+
+    def __del__(self):
+        # Close the database connection when the Management object is destroyed
+        self.client.close()
 
     def getUser(self, userID: str):
         return self.user.get(userID)

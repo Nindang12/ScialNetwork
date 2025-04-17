@@ -1,11 +1,9 @@
-from pymongo import MongoClient
 from bson.objectid import ObjectId
 from comment import Comment
 
 class CommentDAO:
-    def __init__(self, db_url="mongodb://localhost:27017/", db_name="postDB"):
-        self.client = MongoClient(db_url)
-        self.db = self.client[db_name]
+    def __init__(self, db):
+        self.db = db
         self.collection = self.db["comments"]
 
     def getAll(self) -> list:

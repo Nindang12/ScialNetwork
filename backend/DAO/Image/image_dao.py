@@ -1,11 +1,9 @@
-from pymongo import MongoClient
 from bson.objectid import ObjectId
 from image import Image
 
 class ImageDAO:
-    def __init__(self, db_url="mongodb://localhost:27017/", db_name="imageDB"):
-        self.client = MongoClient(db_url)
-        self.db = self.client[db_name]
+    def __init__(self, db):
+        self.db = db
         self.collection = self.db["images"]
 
     def getAll(self) -> list:

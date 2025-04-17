@@ -1,10 +1,9 @@
-from pymongo import MongoClient
 from bson.objectid import ObjectId
+from user import User
 
 class UserDAO:
-    def __init__(self, db_url="mongodb+srv://nhiensu1306:nhiensu0905@blackwolf.pgsd6m8.mongodb.net/", db_name="BlackWolf"):
-        self.client = MongoClient(db_url)
-        self.db = self.client[db_name]
+    def __init__(self, db):
+        self.db = db
         self.collection = self.db["users"]
 
     def getAll(self) -> list:
