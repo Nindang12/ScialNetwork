@@ -1,17 +1,18 @@
 from abc import ABC, abstractmethod
+from typing import List, Optional
 from comment import Comment
 
 class ICommentDAO(ABC):
     @abstractmethod
-    def getAll(self) -> list:
+    def getAll(self) -> List[Comment]:
         pass
 
     @abstractmethod
-    def get(self, comment_id: str) -> Comment:
+    def get(self, comment_id: str) -> Optional[Comment]:
         pass
 
     @abstractmethod
-    def getByPost(self, post_id: str) -> list:
+    def getByPost(self, post_id: str) -> List[Comment]:
         pass
 
     @abstractmethod
