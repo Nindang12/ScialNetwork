@@ -1,61 +1,93 @@
-from DAO.User import UserDAO
-from DAO.Post import PostDAO
-from DAO.Comment import CommentDAO
-from DAO.Image import ImageDAO
-from DAO.Video import VideoDAO
+from typing import Dict, List, Optional
+from DAO.User import User, UserDAO
+from DAO.Post import Post, PostDAO
+from DAO.Comment import Comment, CommentDAO
+from DAO.Image import Image, ImageDAO
+from DAO.Video import Video, VideoDAO
+from DAO.management.ManagementInterface import ManagementInterface
 from config import MONGODB_URL, MONGODB_DB_NAME
 from pymongo import MongoClient
+import logging
 
-class Management:
+class Management(ManagementInterface):
+    """Implementation of ManagementInterface for managing all entities."""
+    
+    def __init__(self):
+        self.logger = logging.getLogger(__name__)
+        self.db = self._get_db()
+        self.daos = self._get_daos()
+
     @staticmethod
     def _get_db():
-        client = MongoClient(MONGODB_URL)
-        db = client[MONGODB_DB_NAME]
-        return db
+        """Get MongoDB database connection."""
+        try:
+            client = MongoClient(MONGODB_URL)
+            return client[MONGODB_DB_NAME]
+        except Exception as e:
+            logging.error(f"Error connecting to database: {str(e)}")
+            raise
 
-    @staticmethod
-    def _get_daos():
-        db = Management._get_db()
+    def _get_daos(self) -> Dict:
+        """Get all DAO instances."""
         return {
-            'user': UserDAO(db),
-            'post': PostDAO(db),
-            'comment': CommentDAO(db),
-            'image': ImageDAO(db),
-            'video': VideoDAO(db)
+            'user': UserDAO(self.db),
+            'post': PostDAO(self.db),
+            'comment': CommentDAO(self.db),
+            'image': ImageDAO(self.db),
+            'video': VideoDAO(self.db)
         }
 
-    # User functions
-    @staticmethod
-    def get_all_users():
-        daos = Management._get_daos()
-        return daos['user'].getAll()
+    def getAllUsers(self) -> List[User]:
+        """Get all users in the system."""
+        try:
+            return self.daos['user'].getAll()
+        except Exception as e:
+            self.logger.error(f"Error getting all users: {str(e)}")
+            raise
 
-    @staticmethod
-    def get_user(userID: str):
-        daos = Management._get_daos()
-        return daos['user'].get(userID)
+    def getUser(self, user_id: str) -> Optional[User]:
+        """Get a user by ID."""
+        try:
+            return self.daos['user'].get(user_id)
+        except Exception as e:
+            self.logger.error(f"Error getting user {user_id}: {str(e)}")
+            raise
 
-    @staticmethod
-    def find_user_by_email(email: str):
-        daos = Management._get_daos()
-        return daos['user'].findByEmail(email)
+    def findUserByEmail(self, email: str) -> Optional[User]:
+        """Find a user by email."""
+        try:
+            return self.daos['user'].findByEmail(email)
+        except Exception as e:
+            self.logger.error(f"Error finding user by email {email}: {str(e)}")
+            raise
 
-    @staticmethod
-    def create_user(data: dict):
-        daos = Management._get_daos()
-        user_obj = daos['user'].model_class(**data)
-        daos['user'].add(user_obj)
+    def createUser(self, data: dict) -> bool:
+        """Create a new user."""
+        try:
+            if not data.get('email') or not data.get('password'):
+                raise ValueError("Email and password are required")
+            user_obj = self.daos['user'].model_class(**data)
+            return self.daos['user'].add(user_obj)
+        except Exception as e:
+            self.logger.error(f"Error creating user: {str(e)}")
+            raise
 
-    @staticmethod
-    def update_user(userID: str, data: dict):
-        daos = Management._get_daos()
-        user_obj = daos['user'].model_class(**data)
-        return daos['user'].update(userID, user_obj)
+    def updateUser(self, user_id: str, data: dict) -> bool:
+        """Update an existing user."""
+        try:
+            user_obj = self.daos['user'].model_class(**data)
+            return self.daos['user'].update(user_id, user_obj)
+        except Exception as e:
+            self.logger.error(f"Error updating user {user_id}: {str(e)}")
+            raise
 
-    @staticmethod
-    def delete_user(userID: str):
-        daos = Management._get_daos()
-        return daos['user'].delete(userID)
+    def deleteUser(self, user_id: str) -> bool:
+        """Delete a user."""
+        try:
+            return self.daos['user'].delete(user_id)
+        except Exception as e:
+            self.logger.error(f"Error deleting user {user_id}: {str(e)}")
+            raise
 
     # Post functions
     @staticmethod
@@ -64,9 +96,9 @@ class Management:
         return daos['post'].getAll()
 
     @staticmethod
-    def get_post(postID: str):
+    def get_post(post_id: str):
         daos = Management._get_daos()
-        return daos['post'].get(postID)
+        return daos['post'].get(post_id)
 
     @staticmethod
     def create_post(data: dict):
@@ -75,25 +107,25 @@ class Management:
         daos['post'].add(post_obj)
 
     @staticmethod
-    def update_post(postID: str, data: dict):
+    def update_post(post_id: str, data: dict):
         daos = Management._get_daos()
         post_obj = daos['post'].model_class(**data)
-        return daos['post'].update(postID, post_obj)
+        return daos['post'].update(post_id, post_obj)
 
     @staticmethod
-    def delete_post(postID: str):
+    def delete_post(post_id: str):
         daos = Management._get_daos()
-        return daos['post'].delete(postID)
+        return daos['post'].delete(post_id)
 
     @staticmethod
-    def like_post(postID: str, userID: str):
+    def like_post(post_id: str, user_id: str):
         daos = Management._get_daos()
-        return daos['post'].like(postID, userID)
+        return daos['post'].like(post_id, user_id)
 
     @staticmethod
-    def repost_post(postID: str, userID: str):
+    def repost_post(post_id: str, user_id: str):
         daos = Management._get_daos()
-        return daos['post'].repost(postID, userID)
+        return daos['post'].repost(post_id, user_id)
 
     # Comment functions
     @staticmethod
@@ -107,9 +139,9 @@ class Management:
         return daos['comment'].get(commentID)
 
     @staticmethod
-    def get_comments_by_post(postID: str):
+    def get_comments_by_post(post_id: str):
         daos = Management._get_daos()
-        return daos['comment'].getByPost(postID)
+        return daos['comment'].getByPost(post_id)
 
     @staticmethod
     def add_comment(data: dict):
@@ -129,9 +161,9 @@ class Management:
         return daos['comment'].delete(commentID)
 
     @staticmethod
-    def like_comment(commentID: str, userID: str):
+    def like_comment(comment_id: str, user_id: str):
         daos = Management._get_daos()
-        return daos['comment'].like(commentID, userID)
+        return daos['comment'].like(comment_id, user_id)
 
     # Image functions
     @staticmethod
@@ -145,9 +177,9 @@ class Management:
         return daos['image'].get(imageID)
 
     @staticmethod
-    def get_images_by_post(postID: str):
+    def get_images_by_post(post_id: str):
         daos = Management._get_daos()
-        return daos['image'].getByPost(postID)
+        return daos['image'].getByPost(post_id)
 
     @staticmethod
     def upload_image(data: dict):
@@ -173,9 +205,9 @@ class Management:
         return daos['video'].get(videoID)
 
     @staticmethod
-    def get_videos_by_post(postID: str):
+    def get_videos_by_post(post_id: str):
         daos = Management._get_daos()
-        return daos['video'].getByPost(postID)
+        return daos['video'].getByPost(post_id)
 
     @staticmethod
     def upload_video(data: dict):

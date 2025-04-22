@@ -1,5 +1,6 @@
 from bson.objectid import ObjectId
 from image import Image
+from typing import List
 
 class ImageDAO:
     def __init__(self, db):
@@ -28,3 +29,17 @@ class ImageDAO:
             {"$set": updated_image.__dict__}
         )
         return result.modified_count > 0
+
+    def delete(self, image_id: str) -> bool:
+        try:
+            result = self.collection.delete_one({"_id": ObjectId(image_id)})
+            return result.deleted_count > 0
+        except Exception as e:
+            self.logger.error(f"Error deleting image {image_id}: {str(e)}")
+
+    def getByUser(self, user_id: str) -> List[Image]:
+        try:
+            images = self.collection.find({"user_id": user_id})
+            return [Image(**img) for img in images]
+        except Exception as e:
+            self.logger.error(f"Error getting images for user {user_id}: {str(e)}")

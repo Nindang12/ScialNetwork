@@ -1,17 +1,18 @@
 from abc import ABC, abstractmethod
+from typing import List, Optional
 from user import User
 
 class IUserDAO(ABC):
     @abstractmethod
-    def getAll(self) -> list:
+    def getAll(self) -> List[User]:
         pass
 
     @abstractmethod
-    def get(self, user_id: str) -> User:
+    def get(self, user_id: str) -> Optional[User]:
         pass
 
     @abstractmethod
-    def findByEmail(self, email: str) -> User:
+    def findByEmail(self, email: str) -> Optional[User]:
         pass
 
     @abstractmethod

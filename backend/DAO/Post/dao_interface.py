@@ -1,13 +1,16 @@
 from abc import ABC, abstractmethod
+from typing import List, Optional
 from post import Post
 
 class IPostDAO(ABC):
     @abstractmethod
-    def getAll(self) -> list:
+    def getAll(self) -> List[Post]:
+        """Retrieve all posts from the database."""
         pass
 
     @abstractmethod
-    def get(self, post_id: str) -> Post:
+    def get(self, post_id: str) -> Optional[Post]:
+        """Retrieve a post by its ID."""
         pass
 
     @abstractmethod
