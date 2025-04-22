@@ -1,15 +1,14 @@
-from fastapi import FastAPI, Depends, HTTPException, status, Path
+from flask import Flask, request, jsonify, abort
 from pydantic import BaseModel
 from typing import List, Optional
 from uuid import uuid4
 
-app = FastAPI(title="Social Network API")
+app = Flask(__name__)
 
 users = {}
 posts = {}
 comments = {}
 followers = {}
-
 
 class UserBase(BaseModel):
     fullname: str
@@ -39,77 +38,85 @@ class Comment(CommentCreate):
     user_id: str
     post_id: str
 
-@app.post("/auth/login")
-def login(email: str, password: str):
+@app.route("/auth/login", methods=["POST"])
+def login():
+    data = request.get_json()
+    email = data.get('email')
+    password = data.get('password')
     for uid, user in users.items():
-        if user['email'] == email:
-            return {"token": f"mock-token-for-{uid}"}
-    raise HTTPException(status_code=401, detail="Invalid credentials")
+        if user['email'] == email and user['password'] == password:
+            return jsonify({"token": f"mock-token-for-{uid}"})
+    abort(401, "Invalid credentials")
 
-@app.post("/auth/logout")
+@app.route("/auth/logout", methods=["POST"])
 def logout():
-    return {"message": "Logged out"}
+    return jsonify({"message": "Logged out"})
 
-@app.get("/auth/me")
+@app.route("/auth/me", methods=["GET"])
 def get_current_user():
-    return {"id": "mock-user", "fullname": "Test User"}
+    return jsonify({"id": "mock-user", "fullname": "Test User"})
 
-@app.post("/users", response_model=User)
-def register_user(user: UserCreate):
+@app.route("/users", methods=["POST"])
+def register_user():
+    data = request.get_json()
     user_id = str(uuid4())
+    user = UserCreate(**data, id=user_id)
     users[user_id] = user.dict()
-    return {**user.dict(), "id": user_id}
+    return jsonify({**user.dict(), "id": user_id})
 
-
-@app.get("/users/{user_id}", response_model=User)
-def get_user(user_id: str = Path(...)):
+@app.route("/users/<user_id>", methods=["GET"])
+def get_user(user_id):
     if user_id not in users:
-        raise HTTPException(status_code=404, detail="User not found")
-    return {**users[user_id], "id": user_id}
+        abort(404, "User not found")
+    return jsonify({**users[user_id], "id": user_id})
 
-
-@app.post("/users/{user_id}/follow")
-def follow_user(user_id: str):
+@app.route("/users/<user_id>/follow", methods=["POST"])
+def follow_user(user_id):
     followers.setdefault(user_id, []).append("mock-user")
-    return {"message": f"You followed {user_id}"}
+    return jsonify({"message": f"You followed {user_id}"})
 
-
-@app.delete("/users/{user_id}/unfollow")
-def unfollow_user(user_id: str):
+@app.route("/users/<user_id>/unfollow", methods=["DELETE"])
+def unfollow_user(user_id):
     followers.get(user_id, []).remove("mock-user")
-    return {"message": f"You unfollowed {user_id}"}
+    return jsonify({"message": f"You unfollowed {user_id}"})
 
-
-@app.post("/posts", response_model=Post)
-def create_post(post: PostCreate):
+@app.route("/posts", methods=["POST"])
+def create_post():
+    data = request.get_json()
     post_id = str(uuid4())
+    post = PostCreate(**data, id=post_id, user_id="mock-user")
     posts[post_id] = post.dict()
-    return {**post.dict(), "id": post_id, "user_id": "mock-user"}
+    return jsonify({**post.dict(), "id": post_id, "user_id": "mock-user"})
 
-
-@app.get("/posts", response_model=List[Post])
+@app.route("/posts", methods=["GET"])
 def list_posts():
-    return [
+    return jsonify([
         {"id": pid, "user_id": "mock-user", **data}
         for pid, data in posts.items()
-    ]
+    ])
 
-
-@app.post("/posts/{post_id}/comments", response_model=Comment)
-def add_comment(post_id: str, comment: CommentCreate):
+@app.route("/posts/<post_id>/comments", methods=["POST"])
+def add_comment(post_id):
+    data = request.get_json()
     comment_id = str(uuid4())
+    comment = CommentCreate(**data, id=comment_id, user_id="mock-user", post_id=post_id)
     comments[comment_id] = comment.dict()
-    return {
+    return jsonify({
         "id": comment_id,
         "user_id": "mock-user",
         "post_id": post_id,
         **comment.dict()
-    }
+    })
 
-
-@app.get("/posts/{post_id}/comments", response_model=List[Comment])
-def get_comments(post_id: str):
-    return [
+@app.route("/posts/<post_id>/comments", methods=["GET"])
+def get_comments(post_id):
+    return jsonify([
         {"id": cid, "user_id": "mock-user", "post_id": post_id, **c}
-        for cid, c in comments.items()
-    ]
+        for cid, c in comments.items() if c['post_id'] == post_id
+    ])
+
+if __name__ == "__main__":
+    app.run(debug=True)
+
+# Authentication.....
+
