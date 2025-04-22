@@ -3,7 +3,7 @@ from pydantic import BaseModel
 from typing import List, Optional
 from uuid import uuid4
 
-app = FastAPI(title="LOOM Social Network API")
+app = FastAPI(title="Social Network API")
 
 users = {}
 posts = {}
@@ -113,5 +113,3 @@ def get_comments(post_id: str):
         {"id": cid, "user_id": "mock-user", "post_id": post_id, **c}
         for cid, c in comments.items()
     ]
-
-#

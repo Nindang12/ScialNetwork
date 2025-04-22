@@ -23,4 +23,4 @@ class Image:
         except Exception:
             return False
 
-# Comment id,
+# Comment id,...
